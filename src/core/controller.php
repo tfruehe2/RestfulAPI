@@ -13,6 +13,14 @@ abstract class Controller
     }
   }
 
+  public function handleRequest($request) {
+    if (method_exists($this,$request->method))
+    {
+      return $this->{$request->method}($request);
+    }
+    return false;
+  }
+
   public function GET($request)
   {
     if ($request->object_id && $request->sub_object)
@@ -33,7 +41,7 @@ abstract class Controller
   {
     //print_r($request->request_array);
     //print_r(static::$model::$required_fields);
-    return static::$model->create($request->request_array);
+    return static::$model->save($request->request_array, $request->object_id);
 
   }
 
@@ -43,7 +51,7 @@ abstract class Controller
     {
       try
       {
-        static::$model->update($id, $request->request_array);
+        static::$model->save($id, $request->request_array);
       }
       catch (Exception $e)
       {

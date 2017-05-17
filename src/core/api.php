@@ -5,21 +5,16 @@ class API
   public $method='',
          $endpoint='',
          $controller,
-         $sub_object='',
-         $object_id='',
-         $args=array(),
-         $file=null,
          $request;
 
-  public function __construct($endpoint)
+  public function __construct()
   {
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: *");
     header("Content-Type: application/json");
 
-    $this->request=new Request();
-
-    $this->endpoint = $endpoint;
+    $this->request= new Request();
+    $this->endpoint = $_REQUEST['endpoint'];
     if(file_exists("./controller/" . rtrim($this->endpoint, "s") . ".php"))
     {
       $class_name = ucfirst(rtrim($this->endpoint, "s"));
@@ -29,13 +24,13 @@ class API
 
   public function processAPI()
   {
-    // if(method_exists($this, $this->endpoint)) {
-    //   return $this->_response($this->{$this->endpoint}($this->args));
-    // }
-    // return $this->_response("No Endpoint: $this->endpoint", 404);
     if ($this->controller)
     {
-      return $this->controller->handleRequest($this->request);
+      if ($data=$this->controller->handleRequest($this->request))
+      {
+        return $this->_response($data);
+      }
+      return $this->_response("Invalid Method: {$this->request->method}",405);
     }
     return $this->_response("No Endpoint: $this->endpoint", 404);
 

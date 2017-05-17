@@ -9,12 +9,11 @@ class DB {
 
   private function __construct()
   {
+    require_once "./../SECRETS/secrets.php";
     try
     {
-      $this->_pdo = new PDO('mysql:dbname=' . Config::get('mysql/db') .
-                            ';host=' . Config::get('mysql/host'),
-                            Config::get('mysql/username'),
-                            Config::get('mysql/password'));
+      $this->_pdo = new PDO('mysql:dbname=' . $DB_NAME .
+                            ';host=' . $DB_HOST, $DB_USERNAME, $DB_PASSWORD);
       $this->_pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
       $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

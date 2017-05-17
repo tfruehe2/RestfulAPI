@@ -17,7 +17,7 @@ class Artists extends ModelBase
     $sql = "SELECT name FROM genres ";
     $sql .= "WHERE genres.id IN (SELECT genre_id ";
     $sql .= "FROM artist_genres as ag WHERE ";
-    $sql .= "sg.artist_id = ?) ORDER BY name ASC;";
+    $sql .= "ag.artist_id = ?) ORDER BY name ASC;";
     return $this->findBySQL($sql, array($artist_id));
   }
 

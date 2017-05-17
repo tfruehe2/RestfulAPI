@@ -3,7 +3,7 @@
 class Request
 {
   public $method,
-         $object_id,
+         $object_id=null,
          $sub_object='',
          $args=array(),
          $file=null;
@@ -52,7 +52,8 @@ class Request
       case 'POST':
             $this->request_array = $this->_cleanInputs($_POST);
             if (!empty($_FILES['file_upload'])) {
-              $this->file = $this->sanitizeFile($_FILES['file_upload']);
+              $this->request_array['file']=$this
+                                        ->sanitizeFile($_FILES['file_upload']);
             }
             break;
       case 'GET':
@@ -72,7 +73,7 @@ class Request
 
   private function sanitizeFile($file) {
     //TO BE IMPLEMENTED LATER
-    return $file
+    return $file;
   }
 
   private function _cleanInputs($data)

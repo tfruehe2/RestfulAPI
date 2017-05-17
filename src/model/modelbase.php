@@ -57,6 +57,7 @@ abstract class ModelBase
     return false;
   }
 
+  //Used for testing purposes only
   public function select($fields, $where, $table=null, $order, $limit)
   {
     if (!$table)

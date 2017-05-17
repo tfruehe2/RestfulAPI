@@ -28,7 +28,7 @@ class Songs extends ModelBase
     //print_r($this->_data);
     if (isset($this->_data['title']) && isset($this->_data['artist_name'])
                                      && isset($this->_data['video_url']))
-                                     {
+    {
       $this->_data['lyrics'] = static::fetchLyrics($this->_data['artist_name'], $this->_data["title"]);
       $post_attrs = array();
       $post_attrs['title'] = $this->_data['title'] . " - " . $this->_data['artist_name'];
