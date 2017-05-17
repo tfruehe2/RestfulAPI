@@ -1,0 +1,9 @@
+Options -MultiViews
+RewriteEngine On
+
+RewriteBase /~Tfruehe-mac/RESTfulAPI/src/
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule api/v1/(.+?)/(.+)?$ index.php?endpoint=$1&request=$2 [QSA,NC,L]
