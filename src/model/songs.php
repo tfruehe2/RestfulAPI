@@ -13,6 +13,13 @@ class Songs extends ModelBase
 
   }
 
+  public function findById($id)
+  {
+    $song = parent::findById($id);
+    $genres = $this->findSongGenres($id);
+    return array('song'=>$song, 'genres'=>$genres);
+  }
+
   public function findSongGenres($song_id)
   {
     $sql = "SELECT name FROM genres ";
@@ -20,6 +27,50 @@ class Songs extends ModelBase
     $sql .= "FROM song_genres as sg WHERE ";
     $sql .= "sg.song_id = ?) ORDER BY name ASC;";
     return $this->findBySQL($sql, array($song_id));
+  }
+
+  public function findSongWithGenres($genre_array)
+  {
+    if (count($genre_array) >= 1)
+    {
+      $sql = "SELECT s.* FROM songs s, WHERE NOT EXISTS ( ";
+      $sql .= "SELECT * FROM genres g WHERE g.name IN (";
+      for($i=1, $i<count($genre_array), $i++)
+      {
+        $sql .= "?, ";
+      }
+      $sql .= "? );";
+      $sql .= "AND NOT EXISTS (SELECT * FROM song_genres sg WHERE ";
+      $sql .= "sg.song_id=s.id AND sg.genre_id=g.id));";
+
+      return $this->findBySQL($sql, $genre_array);
+    }
+    else
+    {
+      throw new Exception("Failed to provide a genre!");
+    }
+  }
+
+
+  public function findArtistInGenres($genre_array)
+  {
+    if (count($genre_array) >= 1)
+    {
+      $sql = "SELECT DISTINCT s.* FROM songs s, ";
+      $sql .= "LEFT JOIN songs_genre sg ON sg.artist_id = s.id ";
+      $sql .= "LEFT JOIN genres g ON sg.genre_id = g.id WHERE g.name IN (";
+      for($i=1, $i<count($genre_array), $i++)
+      {
+        $sql .= "?, ";
+      }
+      $sql .= "? );";
+      return $this->findBySQL($sql, $genre_array);
+    }
+    else
+    {
+      throw new Exception("Failed to provide a genre!");
+    }
+
   }
 
   public function create($params=array())

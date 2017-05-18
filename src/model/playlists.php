@@ -26,6 +26,13 @@ class Playlists extends ModelBase
     return $this->findBySQL($sql, array($pl_id));
   }
 
+  public function findById($id)
+  {
+    $pl_array = parent::findById($id);
+    $song_array = $this->findPlaylistSongs($id);
+    return array('playlist' => $pl_array, 'songs' => $song_array);
+  }
+
 
   public function sampleSelect()
   {

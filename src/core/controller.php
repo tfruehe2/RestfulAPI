@@ -101,19 +101,22 @@ abstract class Controller
 
   public function GetWithId($request)
   {
-    $objs = json_decode(static::$model->findById($request->object_id));
+    $objs = static::$model->findById($request->object_id);
     if($objs)
     {
       foreach ( $objs as $obj)
       {
-        foreach ($obj as $field=>$value)
-        {
-          if ($value)
-          {
-            echo "{$field}: " . $value ."\n";
-          }
-        }
-        echo "\n\n";
+      //   foreach ($obj as $field=>$value)
+      //   {
+      //     if ($value)
+      //     {
+      //       echo "{$field}: " . $value ."\n";
+      //     }
+      //   }
+      //   echo "\n\n";
+      // }
+      print_r($obj);
+      echo "<br />";
       }
     }
     else
